@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29512.175
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AttendanceSystemWebAPI", "AttendanceSystemWebAPI.csproj", "{03FCE077-8F06-42ED-86C7-289133B8C036}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{03FCE077-8F06-42ED-86C7-289133B8C036}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03FCE077-8F06-42ED-86C7-289133B8C036}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03FCE077-8F06-42ED-86C7-289133B8C036}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03FCE077-8F06-42ED-86C7-289133B8C036}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {48B53F2B-EE84-4C20-A67D-8C72EC367A93}
+	EndGlobalSection
+EndGlobal
