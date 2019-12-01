@@ -22,8 +22,25 @@ namespace AttendanceSystemWebAPI.Controllers
 
         public List<EmployeesModel> getAllEmployeeList()
         {
-            EmployeesModel employee = new EmployeesModel();
             return context.Employees.ToList<EmployeesModel>();
+        }
+
+        public EmployeesModel getEmployeeDetail(int id)
+        {
+            return context.Employees.First(employee => employee.ID == id);
+        }
+
+        public EmployeesModel addEmployee(EmployeesModel employeeObj)
+        {
+            EmployeesModel employee = new EmployeesModel
+                {
+                FirstName = "Siddharth",
+                LastName = "Jadhav",
+                Gender = "Male",
+                Salary = 10000
+                };
+            context.Employees.Add(employee);
+            return employee;
         }
 
         // GET: api/Employee
@@ -37,15 +54,18 @@ namespace AttendanceSystemWebAPI.Controllers
 
         // GET: api/Employee/5
         [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        public IActionResult Get(int id)
         {
-            return "value";
+            EmployeesModel employee = getEmployeeDetail(id);
+            return Ok(new { getEmployeeDetail = employee });
         }
 
         // POST: api/Employee
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult Post([FromBody] EmployeesModel employee)
         {
+            EmployeesModel employeeDetail = addEmployee(employee);
+            return Ok( new { employeeDetail = employeeDetail } );
         }
 
         // PUT: api/Employee/5
