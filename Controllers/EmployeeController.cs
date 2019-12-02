@@ -20,34 +20,11 @@ namespace AttendanceSystemWebAPI.Controllers
             this.context = context;
         }
 
-        public List<EmployeesModel> getAllEmployeeList()
-        {
-            return context.Employees.ToList<EmployeesModel>();
-        }
-
-        public EmployeesModel getEmployeeDetail(int id)
-        {
-            return context.Employees.First(employee => employee.ID == id);
-        }
-
-        public EmployeesModel addEmployee(EmployeesModel employeeObj)
-        {
-            EmployeesModel employee = new EmployeesModel
-                {
-                FirstName = "Siddharth",
-                LastName = "Jadhav",
-                Gender = "Male",
-                Salary = 10000
-                };
-            context.Employees.Add(employee);
-            return employee;
-        }
-
         // GET: api/Employee
         [HttpGet]
         public IActionResult Get()
         {
-            List<EmployeesModel> employeeList = getAllEmployeeList();
+            List<EmployeesModel> employeeList = new EmployeeDAL(context).GetAllEmployeeList();
             //return Ok(employeeList);
             return Ok(new { count = employeeList.Count, result = employeeList });
         }
@@ -56,7 +33,7 @@ namespace AttendanceSystemWebAPI.Controllers
         [HttpGet("{id}", Name = "Get")]
         public IActionResult Get(int id)
         {
-            EmployeesModel employee = getEmployeeDetail(id);
+            EmployeesModel employee = new EmployeeDAL(context).GetEmployeeDetail(id);
             return Ok(new { getEmployeeDetail = employee });
         }
 
@@ -64,20 +41,24 @@ namespace AttendanceSystemWebAPI.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] EmployeesModel employee)
         {
-            EmployeesModel employeeDetail = addEmployee(employee);
+            EmployeesModel employeeDetail = new EmployeeDAL(context).AddEmployee(employee);
             return Ok( new { employeeDetail = employeeDetail } );
         }
 
         // PUT: api/Employee/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public IActionResult Put(int id, [FromBody] EmployeesModel employee)
         {
+            EmployeesModel employeeDetail = new EmployeeDAL(context).UpdateEmployeeDetail(id, employee);
+            return Ok( new { employeeDetail = employeeDetail });
         }
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
+            int employeeID = new EmployeeDAL(context).DeleteEmployeeDetail(id);
+            return Ok( new { ID = employeeID } );
         }
     }
 }
