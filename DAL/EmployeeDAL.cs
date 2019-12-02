@@ -41,9 +41,13 @@ namespace AttendanceSystemWebAPI.DAL
         public EmployeesModel UpdateEmployeeDetail(int id, EmployeesModel emplyeeObj)
         {
             EmployeesModel employeeDetail = context.Employees.First<EmployeesModel>(employee => employee.ID == id);
-            //employeeDetail = emplyeeObj;
-            employeeDetail.FirstName = emplyeeObj.FirstName;
-            employeeDetail.Salary = emplyeeObj.Salary;
+            employeeDetail = new EmployeesModel
+            {
+                FirstName = emplyeeObj.FirstName,
+                LastName = emplyeeObj.LastName,
+                Gender = emplyeeObj.Gender,
+                Salary = emplyeeObj.Salary
+            };
             context.SaveChanges();
             return employeeDetail;
         }
