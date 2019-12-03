@@ -58,7 +58,7 @@ namespace AttendanceSystemWebAPI.Controllers
         public IActionResult Delete(int id)
         {
             int employeeID = new EmployeeDAL(context).DeleteEmployeeDetail(id);
-            return Ok( new { ID = employeeID } );
+            return Ok( new { ID = employeeID  } );
         }
     }
 }
