@@ -35,7 +35,6 @@ namespace AttendanceSystemWebAPI
                .Build();
             string DBConstr = config["mysqlConnection"];
             services.AddDbContext<mysqlContextDAL>(options => options.UseMySql(DBConstr));
-            // services.AddDbContext<mysqlContextDAL>(options => options.UseMySql("server=localhost;userid=root;pwd=rootroot;port=3306;database=EmployeeDB;sslmode=none;"));
             services.AddIdentity<ApplicationUserModel, IdentityRole>().AddEntityFrameworkStores<mysqlContextDAL>().AddDefaultTokenProviders();
         }
 
