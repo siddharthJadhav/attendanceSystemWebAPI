@@ -6,9 +6,15 @@ Create table Employees
 (
      ID int primary key auto_increment,
      FirstName nvarchar(50),
+     MiddleName nvarchar(50),
      LastName nvarchar(50),
      Gender nvarchar(50),
-     Salary int
+     Designation nvarchar(50),
+     Shift nvarchar(50),
+     Address nvarchar(100),
+     Email nvarchar(50),
+     DOB date,
+     JoiningDate date
 );
 
 INSERT INTO `EmployeeDB`.`Employees` (`FirstName`, `LastName`, `Gender`, `Salary`) VALUES ('Mark', 'Hastings', 'Male', 60000);
