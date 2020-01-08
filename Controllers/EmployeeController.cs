@@ -10,6 +10,7 @@ using AttendanceSystemWebAPI.Models;
 namespace AttendanceSystemWebAPI.Controllers
 {
     [Route("api/[controller]")]
+    [ExceptionFilter]
     [ApiController]
     public class EmployeeController : ControllerBase
     {
@@ -41,16 +42,35 @@ namespace AttendanceSystemWebAPI.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] EmployeesModel employee)
         {
-            EmployeesModel employeeDetail = new EmployeeDAL(context).AddEmployee(employee);
-            return Ok( new { employeeDetail = employeeDetail } );
+            if(ModelState.IsValid)
+            {
+                EmployeesModel employeeDetail = new EmployeeDAL(context).AddEmployee(employee);
+                return Ok(new { employeeDetail = employeeDetail });
+            } else
+            {
+                return BadRequest(new ErrorResponseModel(400, ModelState));
+            }
+                
         }
 
-        // PUT: api/Employee/5
-        [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] EmployeesModel employee)
+        // PUT: api/Employee
+        [HttpPut]
+        public IActionResult Put([FromBody] EmployeesModel employee)
         {
-            EmployeesModel employeeDetail = new EmployeeDAL(context).UpdateEmployeeDetail(id, employee);
-            return Ok( new { employeeDetail = employeeDetail });
+            if (ModelState.IsValid)
+            {
+                ErrorResponseModel error = new EmployeeDAL(context).EmployeeValidation(employee);
+                if (error != null)
+                {
+                    return BadRequest(error);
+                }
+
+                EmployeesModel employeeDetail = new EmployeeDAL(context).UpdateEmployeeDetail(employee);
+                return Ok(new { employeeDetail = employeeDetail });
+            } else
+            {
+                return BadRequest(new ErrorResponseModel(400, ModelState));
+            }
         }
 
         // DELETE: api/ApiWithActions/5

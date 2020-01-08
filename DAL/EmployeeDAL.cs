@@ -38,16 +38,24 @@ namespace AttendanceSystemWebAPI.DAL
             return employee;
         }
 
-        public EmployeesModel UpdateEmployeeDetail(int id, EmployeesModel emplyeeObj)
+        public EmployeesModel UpdateEmployeeDetail(EmployeesModel emplyeeObj)
         {
-            EmployeesModel employeeDetail = context.Employees.First<EmployeesModel>(employee => employee.ID == id);
-            employeeDetail = new EmployeesModel
-            {
-                FirstName = emplyeeObj.FirstName,
-                LastName = emplyeeObj.LastName,
-                Gender = emplyeeObj.Gender,
-                Salary = emplyeeObj.Salary
-            };
+            EmployeesModel employeeDetail = context.Employees.First<EmployeesModel>(employee => employee.ID == emplyeeObj.ID);
+            //employeeDetail = new EmployeesModel
+            //{
+            //    ID = emplyeeObj.ID,
+            //    FirstName = emplyeeObj.FirstName,
+            //    LastName = emplyeeObj.LastName,
+            //    Gender = emplyeeObj.Gender,
+            //    Salary = emplyeeObj.Salary
+            //};
+
+            employeeDetail.ID = emplyeeObj.ID;
+            employeeDetail.FirstName = emplyeeObj.FirstName;
+            employeeDetail.LastName = emplyeeObj.LastName;
+            employeeDetail.Gender = emplyeeObj.Gender;
+            employeeDetail.Salary = emplyeeObj.Salary;
+
             context.SaveChanges();
             return employeeDetail;
         }
@@ -58,6 +66,17 @@ namespace AttendanceSystemWebAPI.DAL
             context.Employees.Remove(employeeDetail);
             context.SaveChanges();
             return id;
+        }
+
+        public ErrorResponseModel EmployeeValidation(EmployeesModel req)
+        {
+            ErrorResponseModel error = null;
+
+            if (req.ID <= 0)
+            {
+                error = new ErrorResponseModel(400, "Please provide Employee ID.");
+            }
+            return error;
         }
 
     }

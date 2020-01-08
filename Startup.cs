@@ -14,6 +14,8 @@ using AttendanceSystemWebAPI.Models;
 using AttendanceSystemWebAPI.DAL;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace AttendanceSystemWebAPI
 {
@@ -36,6 +38,20 @@ namespace AttendanceSystemWebAPI
             string DBConstr = config["mysqlConnection"];
             services.AddDbContext<mysqlContextDAL>(options => options.UseMySql(DBConstr));
             services.AddIdentity<ApplicationUserModel, IdentityRole>().AddEntityFrameworkStores<mysqlContextDAL>().AddDefaultTokenProviders();
+
+            services.AddMvc()
+               .ConfigureApiBehaviorOptions(options =>
+               {
+                   options.SuppressModelStateInvalidFilter = true;
+               })
+               .AddNewtonsoftJson(options =>
+               {
+                   options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+                   options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+                   options.SerializerSettings.ReferenceLoopHandling =
+                           Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+               });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
