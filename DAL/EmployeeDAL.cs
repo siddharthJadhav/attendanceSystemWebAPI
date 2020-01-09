@@ -14,9 +14,9 @@ namespace AttendanceSystemWebAPI.DAL
             this.context = context;
         }
 
-        public List<EmployeesModel> GetAllEmployeeList()
+        public List<EmployeesModel> GetAllEmployeeList(string FirstName, string LastName, string Gender, string salary, string SalrySort)
         {
-            return context.Employees.ToList<EmployeesModel>();
+            return context.Employees.Where((EmployeesModel employee) => (FirstName == null || employee.FirstName.ToLower().Contains(FirstName.ToLower())) && (LastName == null || employee.LastName.ToLower().Contains(LastName.ToLower())) && (Gender == null || Gender == employee.Gender)).ToList<EmployeesModel>();
         }
 
         public EmployeesModel GetEmployeeDetail(int id)

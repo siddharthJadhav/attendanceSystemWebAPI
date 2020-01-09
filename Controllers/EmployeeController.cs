@@ -23,9 +23,9 @@ namespace AttendanceSystemWebAPI.Controllers
 
         // GET: api/Employee
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult Get(string FirstName, string LastName, string Gender, string salary, string SalrySort)
         {
-            List<EmployeesModel> employeeList = new EmployeeDAL(context).GetAllEmployeeList();
+            List<EmployeesModel> employeeList = new EmployeeDAL(context).GetAllEmployeeList(FirstName, LastName, Gender, salary, SalrySort);
             //return Ok(employeeList);
             return Ok(new { count = employeeList.Count, result = employeeList });
         }
