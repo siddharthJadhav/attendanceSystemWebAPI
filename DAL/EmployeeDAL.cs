@@ -110,5 +110,31 @@ namespace AttendanceSystemWebAPI.DAL
             return emp;
         }
 
+        public async Task<List<EmployeesModel>> getEmployeeListUsingSp()
+        {
+            List<EmployeesModel> employeeList = new List<EmployeesModel>();
+
+            using (DbConnection cnn = new MySqlConnection("server=localhost;userid=root;pwd=rootroot;port=3306;database=EmployeeDB;sslmode=none;"))
+            {
+                DbCommand cmd = cnn.CreateDbCMD(CommandType.StoredProcedure, "sp_get_employee_list");
+                await cnn.OpenAsync();
+                using (DbDataReader reader = await cmd.ExecuteReaderAsync())
+                {
+                    while (await reader.ReadAsync())
+                    {
+                        EmployeesModel emp = new EmployeesModel();
+                        emp.ID = Convert.ToInt32(reader["ID"]);
+                        emp.FirstName = reader["FirstName"].ToString();
+                        emp.LastName = reader["LastName"].ToString();
+                        emp.Gender = reader["Gender"].ToString();
+                        emp.Salary = Convert.ToInt32(reader["Salary"]);
+                        employeeList.Add(emp);
+                    }
+                }
+                cnn.Close();
+            }
+            return employeeList;
+        }
+
     }
 }

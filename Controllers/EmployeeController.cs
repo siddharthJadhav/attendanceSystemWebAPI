@@ -23,10 +23,12 @@ namespace AttendanceSystemWebAPI.Controllers
 
         // GET: api/Employee
         [HttpGet]
-        public IActionResult Get(string FirstName, string LastName, string Gender, string salary, string SalrySort)
+        public async IActionResult Get(string FirstName, string LastName, string Gender, string salary, string SalrySort)
         {
-            List<EmployeesModel> employeeList = new EmployeeDAL(context).GetAllEmployeeList(FirstName, LastName, Gender, salary, SalrySort);
+            //List<EmployeesModel> employeeList = new EmployeeDAL(context).GetAllEmployeeList(FirstName, LastName, Gender, salary, SalrySort);
             //return Ok(employeeList);
+
+            List<EmployeesModel> employeeList = new EmployeeDAL(context).getEmployeeListUsingSp();
             return Ok(new { count = employeeList.Count, result = employeeList });
         }
 
@@ -37,7 +39,13 @@ namespace AttendanceSystemWebAPI.Controllers
             //EmployeesModel employee = new EmployeeDAL(context).GetEmployeeDetail(id);
 
             EmployeesModel employee = await new EmployeeDAL(context).getEmployeeDetailUsingSP(id);
-            return Ok(new { getEmployeeDetail = employee });
+            if (employee.ID == 0) {
+                return BadRequest(new ErrorResponseModel(400, "Employee does not exist!"));
+            }
+            else
+            {
+                return Ok(new { getEmployeeDetail = employee });
+            }
         }
 
         // POST: api/Employee
