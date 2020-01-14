@@ -36,7 +36,7 @@ namespace AttendanceSystemWebAPI.Controllers
         {
             //EmployeesModel employee = new EmployeeDAL(context).GetEmployeeDetail(id);
 
-            EmployeesModel employee = await new EmployeeDAL().getEmployeeDetailUsingSP(id);
+            EmployeesModel employee = await new EmployeeDAL(context).getEmployeeDetailUsingSP(id);
             return Ok(new { getEmployeeDetail = employee });
         }
 

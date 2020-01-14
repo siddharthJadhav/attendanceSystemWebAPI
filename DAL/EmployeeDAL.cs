@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Linq;
+using System.Threading.Tasks;
 using AttendanceSystemWebAPI.Models;
+using MySql.Data.MySqlClient;
 
 namespace AttendanceSystemWebAPI.DAL
 {
@@ -81,38 +83,31 @@ namespace AttendanceSystemWebAPI.DAL
             return error;
         }
 
-        public async Task<EmployeesModel> GetPracticeTaskList(int practiceid)
+        public async Task<EmployeesModel> getEmployeeDetailUsingSP(int employeeID)
         {
             EmployeesModel emp = new EmployeesModel();
             //using (DbConnection cnn = DBContextFactory.GetWerqDBConnection())
 
-            using (DbConnection cnn = new DbConnection(""))
+            using (DbConnection cnn = new MySqlConnection("server=localhost;userid=root;pwd=rootroot;port=3306;database=EmployeeDB;sslmode=none;"))
             {
-                DbCommand cmd = cnn.CreateDbCMD(CommandType.StoredProcedure, "sp_pa_get_practice_tasks_details");
-                cmd.AddCMDParam("practice_id_in", practiceid);
+                DbCommand cmd = cnn.CreateDbCMD(CommandType.StoredProcedure, "sp_get_employee_details");
+                cmd.AddCMDParam("employeeId", employeeID);
                 await cnn.OpenAsync();
                 using (DbDataReader reader = await cmd.ExecuteReaderAsync())
                 {
                     while (await reader.ReadAsync())
                     {
-                        TasksDO taskdetails = new TasksDO();
-                        taskdetails.ID = Convert.ToInt32(reader["ID"]);
-                        taskdetails.PracticeId = Convert.ToInt32(reader["practice_id"]);
-                        taskdetails.PracticeName = reader["practice_name"].ToString();
-                        taskdetails.Name = reader["name"].ToString();
-                        taskdetails.Type = reader["type"].ToString();
-                        taskdetails.StartDate = Convert.ToDateTime(reader["start_date"]);
-                        taskdetails.DueDate = Convert.ToDateTime(reader["due_date"]);
-                        taskdetails.Remark = reader["remark"].ToString();
-                        taskdetails.Status = reader["status"].ToString();
-                        taskdetails.ParentTaskId = !reader.IsDBNull("parent_task_id") ? Convert.ToInt32(reader["parent_task_id"]) : taskdetails.ParentTaskId;
-                        taskdetails.IsFollowUp = Convert.ToBoolean(reader["is_follow_up"]);
-                        tasklist.Add(taskdetails);
+                        emp.ID = Convert.ToInt32(reader["ID"]);
+                        emp.FirstName = reader["FirstName"].ToString();
+                        emp.LastName = reader["LastName"].ToString();
+                        emp.Gender = reader["Gender"].ToString();
+                        emp.Salary = Convert.ToInt32(reader["Salary"]);
+
                     }
                 }
                 cnn.Close();
             }
-            return tasklist;
+            return emp;
         }
 
     }
