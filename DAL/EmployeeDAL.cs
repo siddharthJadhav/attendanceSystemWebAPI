@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.Common;
 using System.Linq;
 using AttendanceSystemWebAPI.Models;
 
@@ -77,6 +79,40 @@ namespace AttendanceSystemWebAPI.DAL
                 error = new ErrorResponseModel(400, "Please provide Employee ID.");
             }
             return error;
+        }
+
+        public async Task<EmployeesModel> GetPracticeTaskList(int practiceid)
+        {
+            EmployeesModel emp = new EmployeesModel();
+            //using (DbConnection cnn = DBContextFactory.GetWerqDBConnection())
+
+            using (DbConnection cnn = new DbConnection(""))
+            {
+                DbCommand cmd = cnn.CreateDbCMD(CommandType.StoredProcedure, "sp_pa_get_practice_tasks_details");
+                cmd.AddCMDParam("practice_id_in", practiceid);
+                await cnn.OpenAsync();
+                using (DbDataReader reader = await cmd.ExecuteReaderAsync())
+                {
+                    while (await reader.ReadAsync())
+                    {
+                        TasksDO taskdetails = new TasksDO();
+                        taskdetails.ID = Convert.ToInt32(reader["ID"]);
+                        taskdetails.PracticeId = Convert.ToInt32(reader["practice_id"]);
+                        taskdetails.PracticeName = reader["practice_name"].ToString();
+                        taskdetails.Name = reader["name"].ToString();
+                        taskdetails.Type = reader["type"].ToString();
+                        taskdetails.StartDate = Convert.ToDateTime(reader["start_date"]);
+                        taskdetails.DueDate = Convert.ToDateTime(reader["due_date"]);
+                        taskdetails.Remark = reader["remark"].ToString();
+                        taskdetails.Status = reader["status"].ToString();
+                        taskdetails.ParentTaskId = !reader.IsDBNull("parent_task_id") ? Convert.ToInt32(reader["parent_task_id"]) : taskdetails.ParentTaskId;
+                        taskdetails.IsFollowUp = Convert.ToBoolean(reader["is_follow_up"]);
+                        tasklist.Add(taskdetails);
+                    }
+                }
+                cnn.Close();
+            }
+            return tasklist;
         }
 
     }

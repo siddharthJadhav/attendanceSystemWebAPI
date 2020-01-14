@@ -32,9 +32,11 @@ namespace AttendanceSystemWebAPI.Controllers
 
         // GET: api/Employee/5
         [HttpGet("{id}", Name = "Get")]
-        public IActionResult Get(int id)
+        public async System.Threading.Tasks.Task<IActionResult> Get(int id)
         {
-            EmployeesModel employee = new EmployeeDAL(context).GetEmployeeDetail(id);
+            //EmployeesModel employee = new EmployeeDAL(context).GetEmployeeDetail(id);
+
+            EmployeesModel employee = await new EmployeeDAL().getEmployeeDetailUsingSP(id);
             return Ok(new { getEmployeeDetail = employee });
         }
 
