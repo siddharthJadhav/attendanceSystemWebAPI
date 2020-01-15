@@ -23,18 +23,18 @@ namespace AttendanceSystemWebAPI.Controllers
 
         // GET: api/Employee
         [HttpGet]
-        public async IActionResult Get(string FirstName, string LastName, string Gender, string salary, string SalrySort)
+        public async Task<IActionResult> Get(string FirstName, string LastName, string Gender, string salary, string SalrySort)
         {
             //List<EmployeesModel> employeeList = new EmployeeDAL(context).GetAllEmployeeList(FirstName, LastName, Gender, salary, SalrySort);
             //return Ok(employeeList);
 
-            List<EmployeesModel> employeeList = new EmployeeDAL(context).getEmployeeListUsingSp();
+            List<EmployeesModel> employeeList = await new EmployeeDAL(context).getEmployeeListUsingSp();
             return Ok(new { count = employeeList.Count, result = employeeList });
         }
 
         // GET: api/Employee/5
         [HttpGet("{id}", Name = "Get")]
-        public async System.Threading.Tasks.Task<IActionResult> Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
             //EmployeesModel employee = new EmployeeDAL(context).GetEmployeeDetail(id);
 
