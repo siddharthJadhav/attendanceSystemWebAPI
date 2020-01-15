@@ -18,7 +18,7 @@ namespace AttendanceSystemWebAPI.DAL
             this.context = context;
         }
 
-        public List<EmployeesModel> GetAllEmployeeList(string FirstName, string LastName, string Gender, string salary, string SalrySort)
+        public List<EmployeesModel> GetAllEmployeeList(string FirstName, string LastName, string Gender, string Salary, string SalrySort)
         {
             return context.Employees.Where((EmployeesModel employee) => (FirstName == null || employee.FirstName.ToLower().Contains(FirstName.ToLower())) && (LastName == null || employee.LastName.ToLower().Contains(LastName.ToLower())) && (Gender == null || Gender == employee.Gender)).ToList<EmployeesModel>();
         }
@@ -110,13 +110,17 @@ namespace AttendanceSystemWebAPI.DAL
             return emp;
         }
 
-        public async Task<List<EmployeesModel>> getEmployeeListUsingSp()
+        public async Task<List<EmployeesModel>> getEmployeeListUsingSp(string FirstName, string LastName, string Gender, int Salary, string SalrySort)
         {
             List<EmployeesModel> employeeList = new List<EmployeesModel>();
 
             using (DbConnection cnn = new MySqlConnection("server=localhost;userid=root;pwd=rootroot;port=3306;database=EmployeeDB;sslmode=none;"))
             {
                 DbCommand cmd = cnn.CreateDbCMD(CommandType.StoredProcedure, "sp_get_employee_list");
+                cmd.AddCMDParam("FirstName_in", FirstName);
+                cmd.AddCMDParam("LastName_in", LastName);
+                cmd.AddCMDParam("Gender_in", Gender);
+                cmd.AddCMDParam("Salary_in", Salary);
                 await cnn.OpenAsync();
                 using (DbDataReader reader = await cmd.ExecuteReaderAsync())
                 {
