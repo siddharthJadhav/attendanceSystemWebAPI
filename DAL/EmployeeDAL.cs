@@ -141,5 +141,19 @@ namespace AttendanceSystemWebAPI.DAL
             return employeeList;
         }
 
+        public async Task<EmployeesModel> addEmployee(EmployeesModel employee)
+        {
+            EmployeesModel emp = new EmployeesModel();
+
+            using (DbConnection cnn = new MySqlConnection("server=localhost;userid=root;pwd=rootroot;port=3306;database=EmployeeDB;sslmode=none;"))
+            {
+                DbCommand cmd = cnn.CreateCommand(CommandType.StoredProcedure, "sp_get_employee_list");
+                cmd.AddCMDParam("FirstName_in", employee.FirstName);
+                cmd.AddCMDParam("LastName_in", employee.LastName);
+                cmd.AddCMDParam("Gender_in", employee.Gender);
+                cmd.AddCMDParam("Salary_in", employee.Salary);
+            }
+        }
+
     }
 }
