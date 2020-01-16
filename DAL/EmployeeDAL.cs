@@ -121,6 +121,7 @@ namespace AttendanceSystemWebAPI.DAL
                 cmd.AddCMDParam("LastName_in", LastName);
                 cmd.AddCMDParam("Gender_in", Gender);
                 cmd.AddCMDParam("Salary_in", Salary);
+                cmd.AddCMDParam("SalrySort_in", SalrySort);
                 await cnn.OpenAsync();
                 using (DbDataReader reader = await cmd.ExecuteReaderAsync())
                 {
