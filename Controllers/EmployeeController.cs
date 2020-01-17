@@ -50,12 +50,12 @@ namespace AttendanceSystemWebAPI.Controllers
 
         // POST: api/Employee
         [HttpPost]
-        public IActionResult Post([FromBody] EmployeesModel employee)
+        public async Task<IActionResult> Post([FromBody] EmployeesModel employee)
         {
             if(ModelState.IsValid)
             {
-                EmployeesModel employeeDetail = new EmployeeDAL(context).AddEmployee(employee);
-                return Ok(new { employeeDetail = employeeDetail });
+                int employeeID =await new EmployeeDAL(context).addEmployeeUsingSp(employee);
+                return Ok(new { employeeID = employeeID });
             } else
             {
                 return BadRequest(new ErrorResponseModel(400, ModelState));
