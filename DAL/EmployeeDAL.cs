@@ -150,7 +150,6 @@ namespace AttendanceSystemWebAPI.DAL
                 DbCommand cmd = cnn.CreateDbCMD(CommandType.StoredProcedure, "sp_add_employee");
                 cmd.AddCMDParam("employee_in", employee.ToJsonString());
                 await cnn.OpenAsync();
-                //await cmd.ExecuteNonQueryAsync();
 
                 using (DbDataReader reader = await cmd.ExecuteReaderAsync())
                 {
@@ -162,6 +161,20 @@ namespace AttendanceSystemWebAPI.DAL
                 cnn.Close();
             }
             return employeeID;
+        }
+
+        public async Task<int> updateEmployeeUsingSp(EmployeesModel employee)
+        {
+            int employeeID = 0;
+
+            using (DbConnection cnn = new MySqlConnection("server=localhost;userid=root;pwd=rootroot;port=3306;database=EmployeeDB;sslmode=none;"))
+            {
+                DbCommand cmd = cnn.CreateDbCMD(CommandType.StoredProcedure, "sp_add_employee");
+                cmd.AddCMDParam("employee_in", employee.ToJsonString());
+                await cnn.OpenAsync();
+
+                using (DbDataReader reader = await cmd.ExecuteReaderAsync()) ;
+            }
         }
 
     }
