@@ -184,6 +184,27 @@ namespace AttendanceSystemWebAPI.DAL
             }
         }
 
+        public async Task<int> deleteEmployeeUsingSp(int id)
+        {
+            int employeeID = 0;
+            using (DbConnection cnn= new MySqlConnection("server=localhost;userid=root;pwd=rootroot;port=3306;database=EmployeeDB;sslmode=none;"))
+            {
+                DbCommand cmd = cnn.CreateDbCMD(CommandType.StoredProcedure, "sp_delete_employee");
+                cmd.AddCMDParam("id_in", id);
+                cnn.Open();
+
+                using (DbDataReader reader = await cmd.ExecuteReaderAsync())
+                {
+                    while(await reader.ReadAsync())
+                    {
+                        employeeID = Convert.ToInt32(reader["id_in"]);
+                    }
+                }
+            }
+            return employeeID;
+
+        }
+
 
 
     }

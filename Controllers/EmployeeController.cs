@@ -85,10 +85,10 @@ namespace AttendanceSystemWebAPI.Controllers
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            int employeeID = new EmployeeDAL(context).DeleteEmployeeDetail(id);
-            return Ok( new { ID = employeeID  } );
+            int employeeID = await new EmployeeDAL(context).deleteEmployeeUsingSp(id);
+            return Ok( new { ID = employeeID } );
         }
     }
 }
