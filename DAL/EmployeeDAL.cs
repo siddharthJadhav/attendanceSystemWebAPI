@@ -163,19 +163,28 @@ namespace AttendanceSystemWebAPI.DAL
             return employeeID;
         }
 
-        public async Task<int> updateEmployeeUsingSp(EmployeesModel employee)
+        public async Task<EmployeesModel> updateEmployeeUsingSp(EmployeesModel employee)
         {
             int employeeID = 0;
 
             using (DbConnection cnn = new MySqlConnection("server=localhost;userid=root;pwd=rootroot;port=3306;database=EmployeeDB;sslmode=none;"))
             {
-                DbCommand cmd = cnn.CreateDbCMD(CommandType.StoredProcedure, "sp_add_employee");
+                DbCommand cmd = cnn.CreateDbCMD(CommandType.StoredProcedure, "sp_update_employee_detail");
                 cmd.AddCMDParam("employee_in", employee.ToJsonString());
                 await cnn.OpenAsync();
 
-                using (DbDataReader reader = await cmd.ExecuteReaderAsync()) ;
+                using (DbDataReader reader = await cmd.ExecuteReaderAsync())
+                {
+                    while (await reader.ReadAsync())
+                    {
+                        employeeID = Convert.ToInt32(reader["employeeID"]);
+                    }
+                }
+                return employee;
             }
         }
+
+
 
     }
 }

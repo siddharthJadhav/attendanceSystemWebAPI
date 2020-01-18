@@ -65,7 +65,7 @@ namespace AttendanceSystemWebAPI.Controllers
 
         // PUT: api/Employee
         [HttpPut]
-        public IActionResult Put([FromBody] EmployeesModel employee)
+        public async Task<IActionResult> Put([FromBody] EmployeesModel employee)
         {
             if (ModelState.IsValid)
             {
@@ -75,7 +75,7 @@ namespace AttendanceSystemWebAPI.Controllers
                     return BadRequest(error);
                 }
 
-                EmployeesModel employeeDetail = new EmployeeDAL(context).UpdateEmployeeDetail(employee);
+                EmployeesModel employeeDetail = await new EmployeeDAL(context).updateEmployeeUsingSp(employee);
                 return Ok(new { employeeDetail = employeeDetail });
             } else
             {

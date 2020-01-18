@@ -3,7 +3,7 @@ in employee_in json
 )
 BEGIN
 
-declare employeeID int default 5;
+declare employeeID int default 0;
 
 insert into `Employees` (
 	`FirstName`,
