@@ -1,7 +1,6 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using AttendanceSystemWebAPI.Models;
 
 namespace AttendanceSystemWebAPI.Models
 {
@@ -22,6 +21,9 @@ namespace AttendanceSystemWebAPI.Models
 
         [Required(ErrorMessage = "Salary is required.")]
         public int Salary { get; set; }
+
+        public List<ContactInfo> ContactInfo { get; set; }
+
 
 		//public string Designation { get; set; }
 

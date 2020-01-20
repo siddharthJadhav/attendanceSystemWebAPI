@@ -149,6 +149,7 @@ namespace AttendanceSystemWebAPI.DAL
             {
                 DbCommand cmd = cnn.CreateDbCMD(CommandType.StoredProcedure, "sp_add_employee");
                 cmd.AddCMDParam("employee_in", employee.ToJsonString());
+                cmd.AddCMDParam("contact_info_in", employee.ContactInfo.ToJsonString());
                 await cnn.OpenAsync();
 
                 using (DbDataReader reader = await cmd.ExecuteReaderAsync())
