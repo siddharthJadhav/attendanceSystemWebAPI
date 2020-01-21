@@ -39,4 +39,12 @@ INSERT INTO `EmployeeDB`.`Employees` (`FirstName`, `LastName`, `Gender`, `Salary
 
 select * from Employees;
 
+create table ContactInfo 
+(
+	ID int primary key auto_increment,
+    UserID int,
+    `Type` varchar(20),
+    `Value` varchar(20)
+)
+
 
