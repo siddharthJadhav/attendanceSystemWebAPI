@@ -11,5 +11,11 @@ SELECT  ID,
 FROM  Employees 
 where  ID = employeeId;
 
+select ID,
+	UserID,
+    `Type`,
+    `Value`
+    from contactinfo 
+where UserID = employeeId;
 
 END
