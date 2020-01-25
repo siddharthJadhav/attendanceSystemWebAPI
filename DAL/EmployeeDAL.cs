@@ -125,6 +125,7 @@ namespace AttendanceSystemWebAPI.DAL
         public async Task<List<EmployeesModel>> getEmployeeListUsingSp(string FirstName, string LastName, string Gender, int Salary, string SalrySort)
         {
             List<EmployeesModel> employeeList = new List<EmployeesModel>();
+            List<ContactInfo> contactInfoList = new List<ContactInfo>();
 
             using (DbConnection cnn = new MySqlConnection("server=localhost;userid=root;pwd=rootroot;port=3306;database=EmployeeDB;sslmode=none;"))
             {
@@ -147,8 +148,32 @@ namespace AttendanceSystemWebAPI.DAL
                         emp.Salary = Convert.ToInt32(reader["Salary"]);
                         employeeList.Add(emp);
                     }
+
+                    await reader.NextResultAsync();
+                    while (await reader.ReadAsync())
+                    {
+                        ContactInfo contact = new ContactInfo();
+                        contact.ID = Convert.ToInt32(reader["ID"]);
+                        contact.UserID = Convert.ToInt32(reader["UserID"]);
+                        contact.Type = reader["Type"].ToString();
+                        contact.Value = reader["Value"].ToString();
+                        contactInfoList.Add(contact);
+                    }
                 }
                 cnn.Close();
+
+                foreach (EmployeesModel employee in employeeList)
+                {
+                    List<ContactInfo> contactList = new List<ContactInfo>();
+                    foreach (ContactInfo contact in contactInfoList)
+                    {
+                        if (contact.UserID == employee.ID)
+                        {
+                            contactList.Add(contact);
+                        }
+                    }
+                    employee.ContactInfo = contactList;
+                }
             }
             return employeeList;
         }
